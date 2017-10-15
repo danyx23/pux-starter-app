@@ -13,6 +13,28 @@ newtype State = State
   , loaded :: Boolean
   }
 
+newtype MovieId = MovieId String
+
+newtype Movie = Movie
+  { id :: MovieId
+  , title :: String
+  , year :: Int
+  }
+
+newtype PersonId = PersonId String
+
+newtype Person = Person
+  { id :: PersonId
+  , firstName :: String
+  , lastName :: String
+  }
+
+newtype Collaborator = Collaborator
+  { personId :: PersonId
+  , movieId :: MovieId
+  , role :: String
+  }
+
 derive instance genericState :: Generic State _
 derive instance newtypeState :: Newtype State _
 
