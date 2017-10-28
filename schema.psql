@@ -1,17 +1,27 @@
-create table movies.movie (
+create schema if not exists movies;
+
+create role app_user nologin;
+grant app_user to postgres;
+
+grant usage on schema movies to app_user;
+grant * on schema movies to app_user;
+
+set schema 'movies';
+
+create table if not exists movie (
   id uuid primary key,
   title text not null,
   year integer not null
 );
 
-create table movies.person (
+create table if not exists person (
   id uuid primary key,
   firstname text not null,
   lastname text not null
 );
 
-create table movies.collaborator (
+create table if not exists collaborator (
   id uuid primary key,
   movie_id uuid REFERENCES movie(id),
-  person_id uuid REFERENCES person(id),
+  person_id uuid REFERENCES person(id)
 );
