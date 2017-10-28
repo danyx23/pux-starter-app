@@ -4,6 +4,25 @@ The [starter app](http://github.com/alexmingoia/pux-starter-app) is a pux
 project configured with isomorphic rendering and routing, hot-reloading, and a
 production server.
 
+## PostgREST setup with docker
+
+run the docker-compose file in ./server:
+
+```bash
+docker-compose -f ./server/docker-compose.yml up
+```
+
+This should bring up a postgres server and a postgREST server with a basic set of matching environment variables. The config is currently barebones, e.g. no persistent storage is configured etc.
+
+To create the schema, copy the schema.psql file into the postgres container, then ingest it:
+
+```bash
+docker cp schema.psql server_db_1:/schema.psql
+docker exec -it server_db_1 bash
+# you should now be on a bash shell in the postgREST server
+cat /schema.psql | gosu postgres psql
+```
+
 ## Installation
 
 Clone the repository and run `npm install` to get started:
