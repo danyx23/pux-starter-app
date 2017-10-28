@@ -1,5 +1,17 @@
 create table movies.movie (
-  id UUID primary key,
+  id uuid primary key,
   title text not null,
   year integer not null
+);
+
+create table movies.person (
+  id uuid primary key,
+  firstname text not null,
+  lastname text not null
+);
+
+create table movies.collaborator (
+  id uuid primary key,
+  movie_id uuid REFERENCES movie(id),
+  person_id uuid REFERENCES person(id),
 );
