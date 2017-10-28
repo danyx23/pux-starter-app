@@ -4,24 +4,27 @@ create role app_user nologin;
 grant app_user to postgres;
 
 grant usage on schema movies to app_user;
-grant * on schema movies to app_user;
+grant all privileges on schema movies to app_user;
 
 set schema 'movies';
 
+drop extension if exists pgcrypto;
+create extension pgcrypto;
+
 create table if not exists movie (
-  id uuid primary key,
+  id uuid primary key default gen_random_uuid(),
   title text not null,
   year integer not null
 );
 
 create table if not exists person (
-  id uuid primary key,
+  id uuid primary key default gen_random_uuid(),
   firstname text not null,
   lastname text not null
 );
 
 create table if not exists collaborator (
-  id uuid primary key,
+  id uuid primary key default gen_random_uuid(),
   movie_id uuid REFERENCES movie(id),
   person_id uuid REFERENCES person(id)
 );

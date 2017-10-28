@@ -2,7 +2,7 @@
 
 The [starter app](http://github.com/alexmingoia/pux-starter-app) is a pux
 project configured with isomorphic rendering and routing, hot-reloading, and a
-production server.
+
 
 ## PostgREST setup with docker
 
