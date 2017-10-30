@@ -23,6 +23,72 @@ docker exec -it server_db_1 bash
 cat /schema.psql | gosu postgres psql
 ```
 
+#### example queries
+
+Fetch all collaborators and embed movies they have participated in.
+
+```
+curl 'localhost:3000/person?select=firstname,lastname,movie(*)' | jq .
+```
+
+```
+[
+  {
+    "firstname": "Barbara",
+    "lastname": "Stanwyck",
+    "movie": [
+      {
+        "id": "3efbcfd7-fac9-4c28-915d-8259a2b53e9c",
+        "title": "Double Indemnity",
+        "year": 1941
+      }
+    ]
+  },
+  {
+    "firstname": "Stanley",
+    "lastname": "Kubrick",
+    "movie": [
+      {
+        "id": "3a79088d-c3f7-45cd-9598-820e283996d4",
+        "title": "Dr. Strangelove",
+        "year": 1961
+      }
+    ]
+  }
+]
+```
+
+Fetch all movies and embed all collaborators.
+
+```
+curl 'localhost:3000/movie?select=title,person(*)' | jq .
+```
+
+```
+[
+  {
+    "title": "Double Indemnity",
+    "person": [
+      {
+        "id": "5e771d4d-6705-45db-80bc-047a2bfd18c0",
+        "firstname": "Barbara",
+        "lastname": "Stanwyck"
+      }
+    ]
+  },
+  {
+    "title": "Dr. Strangelove",
+    "person": [
+      {
+        "id": "71cb8ff8-02bd-4062-8106-2a1f00f7e925",
+        "firstname": "Stanley",
+        "lastname": "Kubrick"
+      }
+    ]
+  }
+]
+```
+
 ## Installation
 
 Clone the repository and run `npm install` to get started:
