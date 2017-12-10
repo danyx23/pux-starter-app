@@ -6,20 +6,36 @@ import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Data.Newtype (class Newtype)
 import Data.Show (class Show)
+import Data.Argonaut (decodeJson, class DecodeJson, (.?))
+
+import Prelude (bind, ($), pure)
+
+-- data Movie = Movie {
+--   id :: String,
+--   title :: String,
+--   year :: Int
+-- }
 
 newtype State = State
   { title :: String
   , route :: Route
   , loaded :: Boolean
+  , movies :: Array Movie
   }
 
 newtype MovieId = MovieId String
 
 newtype Movie = Movie
-  { id :: MovieId
+  { id :: String
   , title :: String
   , year :: Int
   }
+
+instance decodeMovie :: DecodeJson Movie where
+  decodeJson json = do
+    obj <- decodeJson json
+    title <- obj .? "title"
+    pure $ Movie { id: "oij", title: title, year: 1900 }
 
 newtype PersonId = PersonId String
 
@@ -38,11 +54,13 @@ newtype Collaborator = Collaborator
 derive instance genericState :: Generic State _
 derive instance newtypeState :: Newtype State _
 
-instance showState :: Show State where show = genericShow
+-- TODO: uncomment when genericShow works for Movie
+-- instance showState :: Show State where show = genericShow
 
 init :: String -> State
 init url = State
   { title: config.title
   , route: match url
   , loaded: false
+  , movies: []
   }
