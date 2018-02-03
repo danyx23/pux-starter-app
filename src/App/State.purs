@@ -63,6 +63,10 @@ derive newtype instance showMovieId :: Show MovieId
 derive newtype instance showPersonId :: Show PersonId
 derive newtype instance showCollaboratorId :: Show CollaboratorId
 
+derive instance genericMovie :: Generic CollaboratorRecord _
+derive instance genericCollaborator :: Generic CollaboratorRecord _
+derive instance genericCollaborator :: Generic CollaboratorRecord _
+
 init :: String -> State 
 init url = State
   { title: config.title
@@ -73,61 +77,11 @@ init url = State
   , movies : []
   }
 
-{-
-derive instance genericMovie :: Generic Movie _
-derive instance genericMovieId :: Generic MovieId _
-derive instance genericPerson :: Generic Person _
-derive instance genericPersonId :: Generic PersonId _
-derive instance genericCollaborator :: Generic Collaborator _
-derive instance genericCollaboratorId :: Generic CollaboratorId _
-derive instance genericState :: Generic State _
 
-instance showMovie :: Show Movie where show = genericShow
-instance showPerson :: Show Person where show = genericShow
-instance showCollaborator :: Show Collaborator where show = genericShow
-instance showState :: Show State where show = genericShow
--}
 
 derive newtype instance readFMovieId :: ReadForeign MovieId
 derive newtype instance readFPersonId:: ReadForeign PersonId
 derive newtype instance readFCollaboratorId :: ReadForeign CollaboratorId
 
-{-
-derive instance readFPersonRecord :: ReadForeign PersonRecord
-derive instance readFMovieRecord :: ReadForeign MovieRecord
-derive instance readFCollaboratorRecord :: ReadForeign CollaboratorRecord
-
-
-
-derive newtype instance readFMovie :: ReadForeign Movie
-derive newtype instance readFPerson :: ReadForeign Person
--}
---derive newtype instance readFCollaborator :: ReadForeign Collaborator
-
---derive newtype instance readFState :: ReadForeign State
-
-
-{--
-instance decodeMovieId :: Decode MovieId where
-  decode = genericDecode $ defaultOptions {unwrapSingleConstructors = true}
-
-instance decodeMovie :: Decode Movie where
-  decode = genericDecode $ defaultOptions {unwrapSingleConstructors = true}
-
-instance decodePersonId :: Decode PersonId where
-  decode = genericDecode $ defaultOptions {unwrapSingleConstructors = true}
-
-instance decodePerson :: Decode Person where
-  decode = genericDecode $ defaultOptions {unwrapSingleConstructors = true}
-
-instance decodeCollaboratorId :: Decode CollaboratorId where
-  decode = genericDecode $ defaultOptions {unwrapSingleConstructors = true}
-
-instance decodeCollaborator :: Decode Collaborator where
-  decode = genericDecode $ defaultOptions {unwrapSingleConstructors = true}
-
-instance decodeState :: Decode State where
-  decode = genericDecode $ defaultOptions {unwrapSingleConstructors = true}
---}
 
 
