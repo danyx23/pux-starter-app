@@ -7,19 +7,20 @@ import App.View.Layout (view)
 import Control.Applicative (pure)
 import Control.Bind ((=<<), discard, bind)
 import Control.Monad.Eff (Eff)
-import Control.Monad.Except (runExcept)
+import Control.Monad.Except (runExcept, runExceptT)
 import DOM (DOM)
 import DOM.HTML (window)
 import DOM.HTML.Types (HISTORY)
 import Data.Either (either)
-import Data.Function (id, ($))
 import Data.Foreign (Foreign)
-import Data.Foreign.Generic (defaultOptions, genericDecode)
+import Data.Function (id, ($))
 import Pux (CoreEffects, App, start)
 import Pux.DOM.Events (DOMEvent)
 import Pux.DOM.History (sampleURL)
 import Pux.Renderer.React (renderToDOM)
 import Signal ((~>))
+import Simple.JSON (read)
+import Simple.JSON as Simple.JSON
 
 type WebApp = App (DOMEvent -> Event) Event State
 
@@ -36,7 +37,7 @@ main url state = do
   -- | Start the app.
   app <- start
     { initialState: state
-    , view
+    , view 
     , foldp
     , inputs: [routeSignal] }
 
@@ -48,4 +49,4 @@ main url state = do
 
 -- | Used to serialize State from JSON in support/client.entry.js
 readState :: Foreign -> State
-readState json = either (\_ -> init "/") id $ runExcept (genericDecode (defaultOptions { unwrapSingleConstructors = true }) json)
+readState json = either (\_ -> init "/") id $ runExcept $ read json

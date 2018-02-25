@@ -1,14 +1,19 @@
 module App.Routes where
 
-import Data.Function (($))
-import Data.Functor ((<$))
+import Prelude
+
+import Data.Foreign (Foreign, F, readString, toForeign)
 import Data.Foreign.Class (class Decode, class Encode)
 import Data.Foreign.Generic (defaultOptions, genericDecode, genericEncode)
+import Data.Function (($))
+import Data.Functor ((<$))
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Data.Maybe (fromMaybe)
 import Data.Show (class Show)
 import Pux.Router (end, router)
+import Simple.JSON (class ReadForeign, readImpl, class WriteForeign)
+import Simple.JSON as Simple.JSON
 
 data Route = Home | NotFound String
 
@@ -25,4 +30,15 @@ match url = fromMaybe (NotFound url) $ router url $
 
 toURL :: Route -> String
 toURL (NotFound url) = url
-toURL (Home) = "/"
+toURL (Home) = "/" 
+
+instance readFRoute :: ReadForeign Route where
+  readImpl :: Foreign -> F Route
+  readImpl f = do
+    routeString <- readString f
+    pure (match routeString )  
+
+instance writeFRoute :: WriteForeign Route where
+  writeImpl :: Route -> Foreign
+  writeImpl =
+    toForeign <<< toURL

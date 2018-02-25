@@ -19,16 +19,24 @@ import Simple.JSON (readJSON)
 import Data.Foreign.Generic (genericDecodeJSON)
 import Data.Foreign (F, ForeignError) 
 import Data.List.Types (NonEmptyList)
+import Data.Generic.Rep
+import Data.Generic.Rep.Show
 
 data CombinedError
   = NetworkError Error
   | DecodeError (NonEmptyList ForeignError) 
 
+derive instance ceGeneric :: Generic CombinedError _
+instance showCombinedError :: Show CombinedError where
+  show = genericShow
+ 
 data Event
-  = PageView Route
+  = PageView Route 
   | ShowSecret
   | RequestCollaborators
   | ReceiveCollaborators (Either (CombinedError) (Array Collaborator))
+
+
 
 type AppEffects fx = (ajax :: AJAX, console :: CONSOLE | fx)
 
